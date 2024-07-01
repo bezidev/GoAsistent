@@ -1,3 +1,3 @@
-module github.com/mytja/GoAsistent/cmd
+module github.com/bezidev/GoAsistent/cmd
 
 go 1.22

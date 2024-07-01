@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/mytja/GoAsistent"
+	"github.com/bezidev/GoAsistent"
 	"os"
 )
 
 func main() {
-	session, err := GoAsistent.Login(os.Getenv("EA_USER"), os.Getenv("EA_PASS"))
+	session, err := GoAsistent.Login(os.Getenv("EA_USER"), os.Getenv("EA_PASS"), false)
 	if err != nil {
 		fmt.Println(err)
 		return

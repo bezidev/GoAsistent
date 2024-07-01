@@ -1,6 +1,9 @@
 package GoAsistent
 
-import "time"
+import (
+	"github.com/imroc/req/v3"
+	"time"
+)
 
 const EASISTENT_URL = "https://www.easistent.com"
 
@@ -11,6 +14,8 @@ type sessionImpl struct {
 	TokenExpiration int
 	Username        string
 	Name            string
+	DevMode         bool
+	Client          *req.Client
 }
 
 type Session interface {

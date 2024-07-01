@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/imroc/req/v3"
 	"regexp"
 	"strconv"
 	"time"
@@ -80,14 +79,7 @@ func (s *sessionImpl) GetNotifications() ([]Notification, error) {
 		}
 	}
 
-	client := req.C()
-	//client.DevMode()
-
-	HEADERS := WEB_HEADER
-	HEADERS["Authorization"] = fmt.Sprintf("Bearer %s", s.AuthToken)
-	HEADERS["X-Child-Id"] = s.ChildId
-
-	res, err := client.R().SetHeaders(HEADERS).Get(fmt.Sprintf("%s/notifications/ajax_web_notifications_get", EASISTENT_URL))
+	res, err := s.Client.R().Get(fmt.Sprintf("%s/notifications/ajax_web_notifications_get", EASISTENT_URL))
 	if err != nil {
 		return nil, err
 	}

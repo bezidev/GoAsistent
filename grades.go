@@ -2,7 +2,6 @@ package GoAsistent
 
 import (
 	"fmt"
-	"github.com/imroc/req/v3"
 	"time"
 )
 
@@ -93,14 +92,7 @@ func (s *sessionImpl) GetGrades() (GradesResponse, error) {
 		}
 	}
 
-	client := req.C()
-	//client.DevMode()
-
-	HEADERS := WEB_HEADER
-	HEADERS["Authorization"] = fmt.Sprintf("Bearer %s", s.AuthToken)
-	HEADERS["X-Child-Id"] = s.ChildId
-
-	res, err := client.R().SetHeaders(HEADERS).Get(fmt.Sprintf("%s/m/grades", EASISTENT_URL))
+	res, err := s.Client.R().Get(fmt.Sprintf("%s/m/grades", EASISTENT_URL))
 	if err != nil {
 		return GradesResponse{}, err
 	}
@@ -120,14 +112,7 @@ func (s *sessionImpl) GetGradesForSubject(subjectId int) (SubjectGradesResponse,
 		}
 	}
 
-	client := req.C()
-	//client.DevMode()
-
-	HEADERS := WEB_HEADER
-	HEADERS["Authorization"] = fmt.Sprintf("Bearer %s", s.AuthToken)
-	HEADERS["X-Child-Id"] = s.ChildId
-
-	res, err := client.R().SetHeaders(HEADERS).Get(fmt.Sprintf("%s/m/grades/classes/%d", EASISTENT_URL, subjectId))
+	res, err := s.Client.R().Get(fmt.Sprintf("%s/m/grades/classes/%d", EASISTENT_URL, subjectId))
 	if err != nil {
 		return SubjectGradesResponse{}, err
 	}

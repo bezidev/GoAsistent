@@ -21,7 +21,9 @@ type RefreshSessionResponse struct {
 
 func (s *sessionImpl) RefreshSession() error {
 	client := req.C()
-	client.DevMode()
+	if s.DevMode {
+		client.DevMode()
+	}
 	r := RefreshSessionRequest{
 		RefreshToken: s.RefreshToken,
 	}
@@ -41,5 +43,6 @@ func (s *sessionImpl) RefreshSession() error {
 		return err
 	}
 	s.TokenExpiration = int(parse.Unix())
+	s.Client.Headers.Set("Authorization", fmt.Sprintf("Bearer %s", response.AccessToken.Token))
 	return nil
 }

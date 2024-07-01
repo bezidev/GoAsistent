@@ -3,6 +3,7 @@ package GoAsistent
 import (
 	"fmt"
 	"github.com/imroc/req/v3"
+	"net/http"
 	"time"
 )
 
@@ -29,9 +30,11 @@ type LoginResponse struct {
 	Redirect any `json:"redirect"`
 }
 
-func Login(username, password string) (Session, error) {
+func Login(username, password string, devMode bool) (Session, error) {
 	client := req.C()
-	client.DevMode()
+	if devMode {
+		client.DevMode()
+	}
 
 	r := LoginRequest{
 		Username:           username,
@@ -51,6 +54,18 @@ func Login(username, password string) (Session, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	c := req.C()
+	c.Headers = make(http.Header) // idfk, zakaj tega ne naredi req.C()
+	for i, v := range WEB_HEADER {
+		c.Headers.Set(i, v)
+	}
+	c.Headers.Set("Authorization", fmt.Sprintf("Bearer %s", response.AccessToken.Token))
+	c.Headers.Set("X-Child-Id", fmt.Sprint(response.User.ID))
+	if devMode {
+		c.DevMode()
+	}
+
 	return &sessionImpl{
 		AuthToken:       response.AccessToken.Token,
 		RefreshToken:    response.RefreshToken,
@@ -58,5 +73,7 @@ func Login(username, password string) (Session, error) {
 		TokenExpiration: int(parse.Unix()),
 		Username:        response.User.Username,
 		Name:            response.User.Name,
+		DevMode:         devMode,
+		Client:          c,
 	}, nil
 }

@@ -2,7 +2,6 @@ package GoAsistent
 
 import (
 	"fmt"
-	"github.com/imroc/req/v3"
 	"time"
 )
 
@@ -100,14 +99,7 @@ func (s *sessionImpl) GetTimetable(startDate time.Time, endDate time.Time) (Time
 		}
 	}
 
-	client := req.C()
-	//client.DevMode()
-
-	HEADERS := WEB_HEADER
-	HEADERS["Authorization"] = fmt.Sprintf("Bearer %s", s.AuthToken)
-	HEADERS["X-Child-Id"] = s.ChildId
-
-	res, err := client.R().SetHeaders(HEADERS).Get(fmt.Sprintf("%s/m/timetable/weekly?from=%s&to=%s", EASISTENT_URL, startDate.Format("2006-01-02"), endDate.Format("2006-01-02")))
+	res, err := s.Client.R().Get(fmt.Sprintf("%s/m/timetable/weekly?from=%s&to=%s", EASISTENT_URL, startDate.Format("2006-01-02"), endDate.Format("2006-01-02")))
 	if err != nil {
 		return TimetableResponse{}, err
 	}

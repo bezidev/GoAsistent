@@ -2,7 +2,6 @@ package GoAsistent
 
 import (
 	"fmt"
-	"github.com/imroc/req/v3"
 	"strconv"
 	"strings"
 	"time"
@@ -41,19 +40,12 @@ func (s *sessionImpl) GetGradings(past bool) ([]Grading, error) {
 		}
 	}
 
-	client := req.C()
-	client.DevMode()
-
-	HEADERS := WEB_HEADER
-	HEADERS["Authorization"] = fmt.Sprintf("Bearer %s", s.AuthToken)
-	HEADERS["X-Child-Id"] = s.ChildId
-
 	filter := "future"
 	if past {
 		filter = "past"
 	}
 
-	res, err := client.R().SetHeaders(HEADERS).Get(fmt.Sprintf("%s/m/evaluations?filter=%s", EASISTENT_URL, filter))
+	res, err := s.Client.R().Get(fmt.Sprintf("%s/m/evaluations?filter=%s", EASISTENT_URL, filter))
 	if err != nil {
 		return nil, err
 	}
