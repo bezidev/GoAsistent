@@ -98,10 +98,10 @@ func (s *sessionImpl) GetNotifications() ([]Notification, error) {
 			if err != nil {
 				return nil, err
 			}
-			r := regexp.MustCompile(`(?P<Grade>[1-5]) - (?P<Subject>.*), (?P<GradeType>\d{2})`)
+			r := regexp.MustCompile(`(?P<Grade>[1-5]) - (?P<Subject>.*), (?P<GradeType>.*)`)
 			submatches := r.FindStringSubmatch(v.Message)
 			if len(submatches) != 4 {
-				return nil, errors.New("invalid grade – cannot parse grade notification")
+				return nil, errors.New(fmt.Sprintf("invalid grade – cannot parse grade notification: %s", v.Message))
 			}
 			g, err := strconv.Atoi(submatches[1])
 			if err != nil {

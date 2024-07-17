@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	session, err := GoAsistent.Login(os.Getenv("EA_USER"), os.Getenv("EA_PASS"), false)
+	session, err := GoAsistent.Login(os.Getenv("EA_USER"), os.Getenv("EA_PASS"), true)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -18,7 +18,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}*/
-	gradings, err := session.GetGradings(true)
+	gradings, err := session.GetNotifications()
 	if err != nil {
 		fmt.Println(err)
 		return
