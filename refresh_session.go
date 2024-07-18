@@ -44,5 +44,6 @@ func (s *sessionImpl) RefreshSession() error {
 	}
 	s.TokenExpiration = int(parse.Unix())
 	s.Client.Headers.Set("Authorization", fmt.Sprintf("Bearer %s", response.AccessToken.Token))
+	s.Client.Cookies = res.Cookies()
 	return nil
 }
