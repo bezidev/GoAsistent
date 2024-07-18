@@ -77,6 +77,7 @@ func (s *sessionImpl) GetNotifications() ([]Notification, error) {
 		if err != nil {
 			return nil, err
 		}
+		defer s.RefreshTokenCallback(s.Username, s.RefreshToken)
 	}
 
 	res, err := s.Client.R().Get(fmt.Sprintf("%s/notifications/ajax_web_notifications_get", EASISTENT_URL))

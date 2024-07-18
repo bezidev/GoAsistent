@@ -8,14 +8,15 @@ import (
 const EASISTENT_URL = "https://www.easistent.com"
 
 type sessionImpl struct {
-	AuthToken       string
-	RefreshToken    string
-	ChildId         string
-	TokenExpiration int
-	Username        string
-	Name            string
-	DevMode         bool
-	Client          *req.Client
+	AuthToken            string
+	RefreshToken         string
+	ChildId              string
+	TokenExpiration      int
+	Username             string
+	Name                 string
+	DevMode              bool
+	Client               *req.Client
+	RefreshTokenCallback func(username string, refreshToken string)
 }
 
 type Session interface {

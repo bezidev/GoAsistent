@@ -7,7 +7,9 @@ import (
 )
 
 func main() {
-	session, err := GoAsistent.Login(os.Getenv("EA_USER"), os.Getenv("EA_PASS"), true)
+	session, err := GoAsistent.Login(os.Getenv("EA_USER"), os.Getenv("EA_PASS"), true, func(username string, sessionToken string) {
+
+	})
 	if err != nil {
 		fmt.Println(err)
 		return

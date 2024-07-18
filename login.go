@@ -30,7 +30,7 @@ type LoginResponse struct {
 	Redirect any `json:"redirect"`
 }
 
-func Login(username, password string, devMode bool) (Session, error) {
+func Login(username, password string, devMode bool, refreshTokenCallback func(username string, refreshToken string)) (Session, error) {
 	client := req.C()
 	if devMode {
 		client.DevMode()
@@ -68,13 +68,14 @@ func Login(username, password string, devMode bool) (Session, error) {
 	}
 
 	return &sessionImpl{
-		AuthToken:       response.AccessToken.Token,
-		RefreshToken:    response.RefreshToken,
-		ChildId:         fmt.Sprint(response.User.ID),
-		TokenExpiration: int(parse.Unix()),
-		Username:        response.User.Username,
-		Name:            response.User.Name,
-		DevMode:         devMode,
-		Client:          c,
+		AuthToken:            response.AccessToken.Token,
+		RefreshToken:         response.RefreshToken,
+		ChildId:              fmt.Sprint(response.User.ID),
+		TokenExpiration:      int(parse.Unix()),
+		Username:             response.User.Username,
+		Name:                 response.User.Name,
+		DevMode:              devMode,
+		Client:               c,
+		RefreshTokenCallback: refreshTokenCallback,
 	}, nil
 }

@@ -90,6 +90,7 @@ func (s *sessionImpl) GetGrades() (GradesResponse, error) {
 		if err != nil {
 			return GradesResponse{}, err
 		}
+		defer s.RefreshTokenCallback(s.Username, s.RefreshToken)
 	}
 
 	res, err := s.Client.R().Get(fmt.Sprintf("%s/m/grades", EASISTENT_URL))
@@ -110,6 +111,7 @@ func (s *sessionImpl) GetGradesForSubject(subjectId int) (SubjectGradesResponse,
 		if err != nil {
 			return SubjectGradesResponse{}, err
 		}
+		defer s.RefreshTokenCallback(s.Username, s.RefreshToken)
 	}
 
 	res, err := s.Client.R().Get(fmt.Sprintf("%s/m/grades/classes/%d", EASISTENT_URL, subjectId))

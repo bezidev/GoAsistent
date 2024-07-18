@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func SessionFromAuthToken(authToken string, refreshToken string, userId string, expiry int, username string, name string, devMode bool) (Session, error) {
+func SessionFromAuthToken(authToken string, refreshToken string, userId string, expiry int, username string, name string, devMode bool, refreshTokenCallback func(username string, refreshToken string)) (Session, error) {
 	client := req.C()
 	client.Headers = make(http.Header)
 	for i, v := range WEB_HEADER {
@@ -19,13 +19,14 @@ func SessionFromAuthToken(authToken string, refreshToken string, userId string, 
 	}
 
 	return &sessionImpl{
-		AuthToken:       authToken,
-		RefreshToken:    refreshToken,
-		ChildId:         userId,
-		TokenExpiration: expiry,
-		Username:        username,
-		Name:            name,
-		DevMode:         devMode,
-		Client:          client,
+		AuthToken:            authToken,
+		RefreshToken:         refreshToken,
+		ChildId:              userId,
+		TokenExpiration:      expiry,
+		Username:             username,
+		Name:                 name,
+		DevMode:              devMode,
+		Client:               client,
+		RefreshTokenCallback: refreshTokenCallback,
 	}, nil
 }

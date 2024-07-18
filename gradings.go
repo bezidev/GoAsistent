@@ -38,6 +38,7 @@ func (s *sessionImpl) GetGradings(past bool) ([]Grading, error) {
 		if err != nil {
 			return nil, err
 		}
+		defer s.RefreshTokenCallback(s.Username, s.RefreshToken)
 	}
 
 	filter := "future"

@@ -101,6 +101,7 @@ func (s *sessionImpl) GetTimetable(startDate time.Time, endDate time.Time) (Time
 		if err != nil {
 			return TimetableResponse{}, err
 		}
+		defer s.RefreshTokenCallback(s.Username, s.RefreshToken)
 	}
 
 	res, err := s.Client.R().Get(fmt.Sprintf("%s/m/timetable/weekly?from=%s&to=%s", EASISTENT_URL, startDate.Format("2006-01-02"), endDate.Format("2006-01-02")))
