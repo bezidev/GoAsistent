@@ -47,3 +47,17 @@ func (s *sessionImpl) RefreshSession() error {
 	s.Client.Cookies = res.Cookies()
 	return nil
 }
+
+func (s *sessionImpl) RefreshWebSession() error {
+	client := req.C()
+	if s.DevMode {
+		client.DevMode()
+	}
+	client.Cookies = s.Client.Cookies
+	res, err := client.R().SetHeaders(WEB_HEADER).Get(fmt.Sprintf("%s/webapp", EASISTENT_URL))
+	if err != nil {
+		return err
+	}
+	s.Client.Cookies = res.Cookies()
+	return nil
+}
