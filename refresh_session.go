@@ -70,7 +70,7 @@ func (s *sessionImpl) RefreshWebSession(password string) error {
 		"captcha":   "",
 		"koda":      "",
 	}
-	res, err := client.R().SetFormData(fd).SetHeaders(headers).Post(fmt.Sprintf("%s/p/ajax_prijava", EASISTENT_URL))
+	_, err := client.R().SetFormData(fd).SetHeaders(headers).Post(fmt.Sprintf("%s/p/ajax_prijava", EASISTENT_URL))
 	if err != nil {
 		return err
 	}
@@ -79,10 +79,10 @@ func (s *sessionImpl) RefreshWebSession(password string) error {
 		Name:  "easistent_cookie",
 		Value: "zapri",
 	})*/
-	res, err = s.Client.R().Get(fmt.Sprintf("%s/", EASISTENT_URL))
+	_, err = s.Client.R().Get(fmt.Sprintf("%s/", EASISTENT_URL))
 	if err != nil {
 		return err
 	}
-	s.Client.Cookies = res.Cookies()
+	//s.Client.Cookies = res.Cookies()
 	return nil
 }
