@@ -83,6 +83,6 @@ func (s *sessionImpl) RefreshWebSession(password string) error {
 	if err != nil {
 		return err
 	}
-	s.Client.Cookies = res.Cookies()
+	//s.Client.Cookies = res.Cookies()
 	return nil
 }
