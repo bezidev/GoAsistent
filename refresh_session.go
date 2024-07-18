@@ -53,7 +53,7 @@ func (s *sessionImpl) RefreshSession() error {
 	return nil
 }
 
-func (s *sessionImpl) RefreshWebSession() error {
+func (s *sessionImpl) RefreshWebSession(password string) error {
 	client := req.C()
 	if s.DevMode {
 		client.DevMode()
@@ -63,8 +63,14 @@ func (s *sessionImpl) RefreshWebSession() error {
 	for i, v := range WEB_HEADER {
 		headers[i] = v
 	}
-	headers["Authorization"] = fmt.Sprintf("Bearer %s", s.AuthToken)
-	res, err := client.R().SetHeaders(headers).Get(fmt.Sprintf("%s/webapp", EASISTENT_URL))
+	fd := map[string]string{
+		"uporabnik": s.Username,
+		"geslo":     password,
+		"pin":       "",
+		"captcha":   "",
+		"koda":      "",
+	}
+	res, err := client.R().SetFormData(fd).SetHeaders(headers).Post(fmt.Sprintf("%s/p/ajax_prijava", EASISTENT_URL))
 	if err != nil {
 		return err
 	}

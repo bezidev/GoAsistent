@@ -21,7 +21,7 @@ type sessionImpl struct {
 
 type Session interface {
 	RefreshSession() error
-	RefreshWebSession() error
+	RefreshWebSession(string) error
 	GetGradings(past bool) ([]Grading, error)
 	GetTimetable(startDate time.Time, endDate time.Time) (TimetableResponse, error)
 	GetNotifications() ([]Notification, error)
