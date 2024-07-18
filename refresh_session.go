@@ -75,9 +75,14 @@ func (s *sessionImpl) RefreshWebSession(password string) error {
 		return err
 	}
 	s.Client.Cookies = res.Cookies()
-	s.Client.Cookies = append(s.Client.Cookies, &http.Cookie{
+	/*s.Client.Cookies = append(s.Client.Cookies, &http.Cookie{
 		Name:  "easistent_cookie",
 		Value: "zapri",
-	})
+	})*/
+	res, err = s.Client.R().Get(fmt.Sprintf("%s/", EASISTENT_URL))
+	if err != nil {
+		return err
+	}
+	s.Client.Cookies = res.Cookies()
 	return nil
 }
