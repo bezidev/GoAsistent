@@ -58,7 +58,7 @@ func (s *sessionImpl) RefreshWebSession(password string) error {
 	if s.DevMode {
 		client.DevMode()
 	}
-	client.Cookies = s.Client.Cookies
+	//client.Cookies = s.Client.Cookies
 	headers := make(map[string]string)
 	for i, v := range WEB_HEADER {
 		headers[i] = v
@@ -70,11 +70,11 @@ func (s *sessionImpl) RefreshWebSession(password string) error {
 		"captcha":   "",
 		"koda":      "",
 	}
-	_, err := client.R().SetFormData(fd).SetHeaders(headers).Post(fmt.Sprintf("%s/p/ajax_prijava", EASISTENT_URL))
+	res, err := client.R().SetFormData(fd).SetHeaders(headers).Post(fmt.Sprintf("%s/p/ajax_prijava", EASISTENT_URL))
 	if err != nil {
 		return err
 	}
-	//s.Client.Cookies = res.Cookies()
+	s.Client.Cookies = res.Cookies()
 	/*s.Client.Cookies = append(s.Client.Cookies, &http.Cookie{
 		Name:  "easistent_cookie",
 		Value: "zapri",

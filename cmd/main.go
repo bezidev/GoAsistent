@@ -14,16 +14,17 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	session.RefreshWebSession(os.Getenv("EA_PASS"))
 	//fmt.Println(session.GetSessionData())
 	/*err = session.RefreshSession()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}*/
-	gradings, err := session.GetNotifications()
+	/*gradings, err := session.GetNotifications()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(gradings)
+	fmt.Println(gradings)*/
 }
