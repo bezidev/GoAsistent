@@ -3,6 +3,7 @@ package GoAsistent
 import (
 	"fmt"
 	"github.com/imroc/req/v3"
+	"net/http"
 	"time"
 )
 
@@ -45,6 +46,10 @@ func (s *sessionImpl) RefreshSession() error {
 	s.TokenExpiration = int(parse.Unix())
 	s.Client.Headers.Set("Authorization", fmt.Sprintf("Bearer %s", response.AccessToken.Token))
 	s.Client.Cookies = res.Cookies()
+	s.Client.Cookies = append(s.Client.Cookies, &http.Cookie{
+		Name:  "easistent_cookie",
+		Value: "zapri",
+	})
 	return nil
 }
 
@@ -54,10 +59,19 @@ func (s *sessionImpl) RefreshWebSession() error {
 		client.DevMode()
 	}
 	client.Cookies = s.Client.Cookies
-	res, err := client.R().SetHeaders(WEB_HEADER).Get(fmt.Sprintf("%s/webapp", EASISTENT_URL))
+	headers := make(map[string]string)
+	for i, v := range WEB_HEADER {
+		headers[i] = v
+	}
+	headers["Authorization"] = fmt.Sprintf("Bearer %s", s.AuthToken)
+	res, err := client.R().SetHeaders(headers).Get(fmt.Sprintf("%s/webapp", EASISTENT_URL))
 	if err != nil {
 		return err
 	}
 	s.Client.Cookies = res.Cookies()
+	s.Client.Cookies = append(s.Client.Cookies, &http.Cookie{
+		Name:  "easistent_cookie",
+		Value: "zapri",
+	})
 	return nil
 }

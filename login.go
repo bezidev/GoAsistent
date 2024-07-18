@@ -63,6 +63,10 @@ func Login(username, password string, devMode bool, refreshTokenCallback func(us
 	c.Headers.Set("Authorization", fmt.Sprintf("Bearer %s", response.AccessToken.Token))
 	c.Headers.Set("X-Child-Id", fmt.Sprint(response.User.ID))
 	c.Cookies = res.Cookies()
+	c.Cookies = append(c.Cookies, &http.Cookie{
+		Name:  "easistent_cookie",
+		Value: "zapri",
+	})
 	if devMode {
 		c.DevMode()
 	}
