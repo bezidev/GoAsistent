@@ -47,6 +47,7 @@ type NotificationsResponse struct {
 
 // Notification je javen izhod iz funkcije GetNotifications
 type Notification struct {
+	CreatedAt time.Time
 	Type      int
 	GradeData struct {
 		GradeID     int
@@ -114,8 +115,15 @@ func (s *sessionImpl) GetNotifications() ([]Notification, error) {
 			} else if submatches[3] == "Ustna ocena" {
 				gt = UstnaOcena
 			}
+
+			date, err := time.Parse("2006-01-02 03:04:05", v.CreatedAt)
+			if err != nil {
+				return nil, err
+			}
+
 			n := Notification{
-				Type: GradeNotification,
+				CreatedAt: date,
+				Type:      GradeNotification,
 				GradeData: struct {
 					GradeID     int
 					SubjectID   int
