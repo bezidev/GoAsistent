@@ -7,24 +7,24 @@ import (
 )
 
 func main() {
-	session, err := GoAsistent.Login(os.Getenv("EA_USER"), os.Getenv("EA_PASS"), true, func(username string, sessionToken string) {
+	session, err := GoAsistent.WebLogin(os.Getenv("EA_USER"), os.Getenv("EA_PASS"), true, func(username string, sessionToken string) {
 
 	})
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	session.RefreshWebSession(os.Getenv("EA_PASS"))
+	//session.RefreshWebSession(os.Getenv("EA_PASS"))
 	//fmt.Println(session.GetSessionData())
 	/*err = session.RefreshSession()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}*/
-	/*gradings, err := session.GetNotifications()
+	gradings, err := session.GetAbsences()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(gradings)*/
+	fmt.Println(gradings)
 }

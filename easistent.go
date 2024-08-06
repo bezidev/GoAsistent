@@ -28,4 +28,9 @@ type Session interface {
 	GetGrades() (GradesResponse, error)
 	GetGradesForSubject(subjectId int) (SubjectGradesResponse, error)
 	GetSessionData() *sessionImpl
+	GetMeals() (MealsResponse, error)
+	GetMenus() (MenusResponse, error)
+	CreateOrder(date string, menu string) error
+	DeleteOrder(mealId string) error
+	GetAbsences() (AbsencesResponse, error)
 }
